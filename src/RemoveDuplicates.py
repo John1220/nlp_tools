@@ -6,7 +6,7 @@ from concurrent import futures
 import numpy as np
 import Levenshtein
 
-from segmenter import HanlpSegmenter
+from segmenter import hanlpsegmenter
 
 
 def timer(func):
@@ -42,7 +42,7 @@ def read_texts(data_path, num=1000):
     return texts[1:]
 
 
-def cut_merge(texts, bin_size=1000):
+def cut_merge(texts, bin_size=1000, processor=8):
     """
     切分、合并
     :param texts: 原文本集合
@@ -69,7 +69,9 @@ def drop_dup(texts, threshold=0.66):
     :param threshold:
     :return:
     """
-    tokens = np.array([HanlpSegmenter.cut_words(text.split('|')[1]).split(' ') for text in texts])
+    if len(texts) < 1:
+        return texts
+    tokens = np.array([hanlpsegmenter.cut_words(text.split('|')[-1]).split(' ') for text in texts])
     length = len(tokens)
     sim_matrix = np.array([
         any([Jaccrad(tokens[i], tokens[j]) > threshold for j in range(i + 1, length)])
@@ -80,9 +82,11 @@ def drop_dup(texts, threshold=0.66):
     return texts
 
 
-def output(texts):
+def output(texts, output_dir="output"):
     texts = texts.tolist()
-    with open("test/drop_dup_texts.txt", 'w', encoding='utf8') as w:
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+    with open(os.path.join(output_dir, 'drop_dup_texts.txt'), 'w', encoding='utf8') as w:
         w.write(''.join([x + '\n' for x in texts]))
     print(f"texts write done.")
 
@@ -92,7 +96,7 @@ def main():
     根据相似性去重: 切分、去重、合并; 再切分、去重、合并
     """
     data_path = r""
-    texts = read_texts(data_path, 1000000)
+    texts = read_texts(data_path, 500000)
     droped_len = len(texts)
     count = 1
     while True:

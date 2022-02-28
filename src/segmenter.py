@@ -21,6 +21,7 @@ class HanlpSegmenter(object):
         return ' '.join(cuts)
 
 
+hanlpsegmenter = HanlpSegmenter()
+
 if __name__ == '__main__':
-    print(HanlpSegmenter().cut_words(
-        "【交银施罗德基金】尊敬的柯燕卿:您于7月27日提交的定期定额申购阿尔法申请确认成功,确认金额90.00元,确认份额28.25份,成交净值3.181元。微信关注公众号""jysld001"", 基金知识、精彩活动尽在掌握!"))
+    print(hanlpsegmenter.cut_words(""))
