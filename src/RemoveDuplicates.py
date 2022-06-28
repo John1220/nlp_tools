@@ -4,9 +4,8 @@ import time
 from concurrent import futures
 
 import numpy as np
-import Levenshtein
 
-from segmenter import hanlpsegmenter
+from src.simhash.segmenter import hanlpsegmenter
 
 
 def timer(func):
