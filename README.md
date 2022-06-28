@@ -1,5 +1,6 @@
 # 关于文本处理的小工具
 
-- 文本去重
-> filter_hash.py    去除相似度较高的文本，快速去重
-> 
+- 文本去重 - hamming相似度
+> simhash
+- 文本去重 - jaccard相似度
+> RemoveDuplicates.py
