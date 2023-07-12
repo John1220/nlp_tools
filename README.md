@@ -1,6 +1,7 @@
 # 关于文本处理的小工具
 
-- 文本去重 - hamming相似度
-> simhash
-- 文本去重 - jaccard相似度
+- 文本模糊去重（相似度采用hamming距离）
+> simhash 方法
+
+- 文本模糊去重（相似度采用Jaccard相似度）
 > RemoveDuplicates.py

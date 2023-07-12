@@ -74,7 +74,7 @@ class HashFilter():
 
     def update_dict(self, index, key):
         """
-        index:  text id
+        index:  text fingerprint
         key:    16 bits key
         """
         hmhold = self.hmhold
@@ -173,9 +173,13 @@ class HashFilter():
         drop_dup_result = set(itertools.chain.from_iterable(self.hashdic.values()))
         droped_text = [self.texts_raw[i] for i in drop_dup_result]
         print(f"after filter texts size: {len(droped_text)}")
+
+        # 保存去重后文本
         outputfile = os.path.join(os.getcwd(), self.savedir, f'dropedtext-{suffix}w-hm{self.hmhold}-{nowtime}.txt')
         IO_Utils.write_texts(droped_text, outputfile)
         print(f'file saved at {outputfile}')
+
+        # 保存重复记录文本
         duptexts_file = os.path.join(os.getcwd(), self.savedir, f'duptext-{suffix}w-hm{self.hmhold}-{nowtime}.csv')
         duptexts = [(i, j, self.texts_raw[i], self.texts_raw[j]) for i, j in self.duptexts]
         pd.DataFrame(data=duptexts, columns=['i', 'j', 'text_i', 'text_j']).sort_values(by='i').to_csv(duptexts_file,
